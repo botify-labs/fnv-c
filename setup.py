@@ -5,7 +5,7 @@ setup(
     version="0.1.0",
     description="FIXME",
     long_description="FIXME",
-    url="https://github.com/fabien-marty/fnv0",
+    url="https://github.com/botify-labs/fnv-c",
     author="Fabien MARTY",
     author_email="fabien.marty@botify.com",
     classifiers=[

@@ -1,6 +1,6 @@
 # fnv0
 
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/fabien-marty/fnv0/lint.yaml)](https://github.com/fabien-marty/fnv0/actions/workflows/lint.yaml)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/botify-labs/fnv-c/lint.yaml)](https://github.com/botify-labs/fnv-c/actions/workflows/lint.yaml)
 
 ## What is it?
 
@@ -22,7 +22,7 @@ Python 3.7+ is a FNV0 hash library implemented in C through libffi.
 ## How to install/use it?
 
 ```
-pip install git+https://github.com/fabien-marty/fnv0.git#egg=fnv0
+pip install git+https://github.com/botify-labs/fnv-c.git#egg=fnv0
 ```
 
 ```python
