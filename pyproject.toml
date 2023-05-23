@@ -1,0 +1,10 @@
+[tool.ruff]
+# Enable Pyflakes `E` and `F` codes by default.
+select = ["E", "F", "W", "N", "UP", "B", "I", "PL", "RUF"]
+ignore = [
+    "E501",
+    "PLR2004"
+]
+line-length = 88
+target-version = "py37"
+extend-exclude = ["docs/python", "html"]
