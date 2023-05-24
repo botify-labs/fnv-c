@@ -1,7 +1,7 @@
 import json
 import os
 
-import fnv0
+import fnv_c
 
 DIR = os.path.dirname(os.path.realpath(__file__))
 
@@ -14,10 +14,10 @@ with open(JSON_FILE) as f:
 def test_fnv0_32():
     for d in data:
         dta = d["data"].encode("utf8")
-        assert fnv0.fnv0_32(dta) == d["fnv0_32"]
+        assert fnv_c.fnv0_32(dta) == d["fnv0_32"]
 
 
 def test_fnv0_64():
     for d in data:
         dta = d["data"].encode("utf8")
-        assert fnv0.fnv0_64(dta) == d["fnv0_64"]
+        assert fnv_c.fnv0_64(dta) == d["fnv0_64"]

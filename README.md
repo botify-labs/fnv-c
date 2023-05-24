@@ -1,10 +1,10 @@
-# fnv0
+# fnv-c
 
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/botify-labs/fnv-c/lint.yaml)](https://github.com/botify-labs/fnv-c/actions/workflows/lint.yaml)
 
 ## What is it?
 
-Python 3.7+ is a FNV0 hash library implemented in C through libffi.
+Python 3.7+ is a FNV (fnv0, fnv1, fnv1a, 32/64 bits) hash library implemented in C through libffi.
 
 ## Features
 
@@ -26,10 +26,10 @@ pip install git+https://github.com/botify-labs/fnv-c.git#egg=fnv0
 ```
 
 ```python
-import fnv0
+import fnv_c
 
-print(fnv0.fnv0_32(b"foo bar"))
-print(fnv0.fnv0_64(b"foo bar"))
+print(fnv_c.fnv0_32(b"foo bar"))
+print(fnv_c.fnv0_64(b"foo bar"))
 ```
 
 ## Function signatures / API

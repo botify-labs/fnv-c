@@ -9,7 +9,7 @@ ffibuilder.cdef(
 """
 )
 ffibuilder.set_source(
-    "fnv0.ext._fnv0",
+    "fnv_c.ext._fnv",
     """
     #include <stdint.h>
     #include <string.h>
@@ -17,7 +17,7 @@ ffibuilder.set_source(
     uint64_t fnv0_64(void *data, size_t len);
     uint32_t fnv0_32(void *data, size_t len);
 """,
-    sources=["fnv0/ext/fnv0.c"],
+    sources=["fnv_c/ext/fnv.c"],
 )
 
 

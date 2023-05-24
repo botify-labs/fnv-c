@@ -1,4 +1,4 @@
-from fnv0.ext._fnv0 import lib
+from fnv_c.ext._fnv import lib
 
 
 def fnv0_64(data: bytes) -> int:

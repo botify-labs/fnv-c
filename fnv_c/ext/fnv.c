@@ -1,4 +1,4 @@
-#include "fnv0.h"
+#include "fnv.h"
 
 uint64_t fnv0_64(void *data, size_t len)
 {

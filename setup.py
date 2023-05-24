@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
 setup(
-    name="fnv0",
+    name="fnv-c",
     version="0.1.0",
     description="FIXME",
     long_description="FIXME",
@@ -17,5 +17,5 @@ setup(
     packages=find_packages(),
     install_requires=["cffi>=1.0.0"],
     setup_requires=["cffi>=1.0.0"],
-    cffi_modules=["./fnv0/ext/build.py:ffibuilder"],
+    cffi_modules=["./fnv_c/ext/build.py:ffibuilder"],
 )

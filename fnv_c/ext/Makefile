@@ -1,11 +1,11 @@
 CFLAGS:=-Wall 
 
 .PHONY: all
-all: fnv0.o 
+all: fnv.o 
 
-fnv0.o: fnv0.c fnv0.h
+fnv.o: fnv.c fnv.h
 	$(CC) -c $(CFLAGS) $<
 
 .PHONY: clean
 clean:
-	rm -f *.o *.so _fnv0*
+	rm -f *.o *.so _fnv*

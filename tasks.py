@@ -4,9 +4,9 @@ from invoke import task
 @task
 def clean(c):
     """Clean the repository"""
-    c.run("rm -f fnv0/ext/*.o fnv0/ext/*.so fnv0/ext/_fnv*")
+    c.run("rm -f fnv_c/ext/*.o fnv_c/ext/*.so fnv_c/ext/_fnv*")
     c.run(
-        "rm -Rf .*_cache build ; find . -type d -name __pycache__ -exec rm -Rf {} \\; 2>/dev/null"
+        "rm -Rf *.egg-info .*_cache build ; find . -type d -name __pycache__ -exec rm -Rf {} \\; 2>/dev/null"
     )
     c.run("rm -Rf dist build")
 
