@@ -4,7 +4,7 @@
 
 ## What is it?
 
-**fnv-c** is a Python 3.7+ is a FNV (`fnv0`, `fnv1`, `fnv1a`) non-cryptographic hash library implemented in C through libffi.
+**fnv-c** is a Python 3.7+ FNV (`fnv0`, `fnv1`, `fnv1a`) non-cryptographic hash library implemented in C through libffi.
 
 ## Features
 
