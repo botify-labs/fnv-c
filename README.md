@@ -4,7 +4,7 @@
 
 ## What is it?
 
-Python 3.7+ is a FNV (fnv0, fnv1, fnv1a, 32/64 bits) hash library implemented in C through libffi.
+**fnv-c** is a Python 3.7+ is a FNV (`fnv0`, `fnv1`, `fnv1a`) non-cryptographic hash library implemented in C through libffi.
 
 ## Features
 
@@ -22,7 +22,7 @@ Python 3.7+ is a FNV (fnv0, fnv1, fnv1a, 32/64 bits) hash library implemented in
 ## How to install/use it?
 
 ```
-pip install git+https://github.com/botify-labs/fnv-c.git#egg=fnv0
+pip install git+https://github.com/botify-labs/fnv-c.git#egg=fnv_c
 ```
 
 ```python
