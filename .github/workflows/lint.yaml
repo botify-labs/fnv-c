@@ -79,6 +79,10 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.7
       - name: Deps install
         run: |
           pip install -r dev-requirements.txt
@@ -89,5 +93,8 @@ jobs:
         run: |
           python setup.py sdist
       - name: Upload to PyPi
+        env:
+          TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
         run: |
           twine upload dist/*
