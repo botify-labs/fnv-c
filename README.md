@@ -34,10 +34,7 @@ print(fnv_c.fnv0_64(b"foo bar"))
 
 ## Function signatures / API
 
-```
-fnv0_32(data: bytes) -> int
-fnv0_64(data: bytes) -> int
-```
+Full API doc is available at: [https://botify-labs.github.io/fnv-c/fnv_c/](https://botify-labs.github.io/fnv-c/fnv_c/)
 
 ## Dev
 
