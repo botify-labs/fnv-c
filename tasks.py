@@ -1,14 +1,21 @@
 from invoke import task
 
+PACKAGE = "fnv_c"
+
+
+def _clean_apidoc(c):
+    c.run("rm -Rf apihtml")
+
 
 @task
 def clean(c):
     """Clean the repository"""
-    c.run("rm -f fnv_c/ext/*.o fnv_c/ext/*.so fnv_c/ext/_fnv*")
+    c.run(f"rm -f {PACKAGE}/ext/*.o {PACKAGE}/ext/*.so {PACKAGE}/ext/_fnv*")
     c.run(
         "rm -Rf *.egg-info .*_cache build ; find . -type d -name __pycache__ -exec rm -Rf {} \\; 2>/dev/null"
     )
     c.run("rm -Rf dist build")
+    _clean_apidoc(c)
 
 
 @task(help={"fix": "try to automatically fix the code (default)"})
@@ -40,3 +47,10 @@ def lint(c, fix=True):
 def test(c, coverage=False):
     """Execute unit tests"""
     c.run("pytest .")
+
+
+@task
+def apidoc(c):
+    """Make API doc"""
+    _clean_apidoc(c)
+    c.run(f"pdoc3 --html --output-dir=apihtml {PACKAGE}")

@@ -159,4 +159,5 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-fnv0/ext/fnv0.o
+fnv_c/ext/fnv.o
+apihtml

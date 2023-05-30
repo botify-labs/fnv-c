@@ -34,3 +34,13 @@ jobs:
       - name: Run tests
         run: |
           invoke test 
+      - name: Make API docs
+        if: matrix.python-version == '3.7'
+        run: |
+          invoke apidoc
+      - name: Upload API doc as an artifact
+        if: matrix.python-version == '3.7'
+        uses: actions/upload-artifact@v3
+        with:
+          name: apidoc
+          path: apihtml/
