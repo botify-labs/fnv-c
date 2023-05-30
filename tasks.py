@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from dunamai import Style, Version
 from invoke import task
 

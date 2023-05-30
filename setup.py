@@ -2,11 +2,16 @@ from setuptools import find_packages, setup
 
 VERSION = "0.0.0"
 
+DESCRIPTION = "Python 3.7+ FNV (fnv0, fnv1, fnv1a) non-cryptographic hash library implemented in C through libffi"
+with open("README.md") as f:
+    LONG_DESCRIPTION = f.read()
+
+
 setup(
     name="fnv-c",
     version=VERSION,
-    description="FIXME",
-    long_description="FIXME",
+    description=DESCRIPTION,
+    long_description=LONG_DESCRIPTION,
     url="https://github.com/botify-labs/fnv-c",
     author="Fabien MARTY",
     author_email="fabien.marty@botify.com",
