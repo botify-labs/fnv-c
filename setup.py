@@ -1,8 +1,10 @@
 from setuptools import find_packages, setup
 
+VERSION = "0.0.0"
+
 setup(
     name="fnv-c",
-    version="0.1.0",
+    version=VERSION,
     description="FIXME",
     long_description="FIXME",
     url="https://github.com/botify-labs/fnv-c",

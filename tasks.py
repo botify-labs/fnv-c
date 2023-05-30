@@ -1,3 +1,4 @@
+from dunamai import Style, Version
 from invoke import task
 
 PACKAGE = "fnv_c"
@@ -11,9 +12,8 @@ def _clean_apidoc(c):
 def clean(c):
     """Clean the repository"""
     c.run(f"rm -f {PACKAGE}/ext/*.o {PACKAGE}/ext/*.so {PACKAGE}/ext/_fnv*")
-    c.run(
-        "rm -Rf *.egg-info .*_cache build ; find . -type d -name __pycache__ -exec rm -Rf {} \\; 2>/dev/null"
-    )
+    c.run("rm -Rf *.egg-info .*_cache build ")
+    c.run("find . -type d -name __pycache__ -exec rm -Rf {} \\; 2>/dev/null || true")
     c.run("rm -Rf dist build")
     _clean_apidoc(c)
 
@@ -54,3 +54,26 @@ def apidoc(c):
     """Make API doc"""
     _clean_apidoc(c)
     c.run(f"pdoc3 --html --output-dir=apihtml {PACKAGE}")
+
+
+@task
+def bump_version(c, force_version: str | None = None):
+    if force_version is None:
+        version = Version.from_git().serialize(style=Style.SemVer)
+    else:
+        version = force_version
+
+    print(f"Setting version={version}")
+
+    with open("setup.py") as f:
+        c = f.read()
+
+    lines = []
+    for line in c.splitlines():
+        if line.startswith("VERSION = "):
+            lines.append(f'VERSION = "{version}"')
+        else:
+            lines.append(line)
+
+    with open("setup.py", "w") as g:
+        g.write("\n".join(lines))
