@@ -6,6 +6,10 @@ ffibuilder.cdef(
     """
     uint64_t fnv0_64(void *data, size_t len);
     uint32_t fnv0_32(void *data, size_t len);
+    uint64_t fnv1_64(void *data, size_t len);
+    uint32_t fnv1_32(void *data, size_t len);
+    uint64_t fnv1a_64(void *data, size_t len);
+    uint32_t fnv1a_32(void *data, size_t len);
 """
 )
 ffibuilder.set_source(
@@ -16,6 +20,10 @@ ffibuilder.set_source(
 
     uint64_t fnv0_64(void *data, size_t len);
     uint32_t fnv0_32(void *data, size_t len);
+    uint64_t fnv1_64(void *data, size_t len);
+    uint32_t fnv1_32(void *data, size_t len);
+    uint64_t fnv1a_64(void *data, size_t len);
+    uint32_t fnv1a_32(void *data, size_t len);
 """,
     sources=["fnv_c/ext/fnv.c"],
 )
