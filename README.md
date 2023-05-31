@@ -22,12 +22,13 @@ More details on [this Wikepedia article](https://en.wikipedia.org/wiki/Fowler%E2
 - speed: **4 000%** faster than basic Python implementation, **40%** faster than `pyhash`
 - portability:
     - tested with recent Python versions (3.7+)
-    - compatible with ARM64 and avoid too agressive CPU optimizations for maximizing binary portability 
+    - compatible with ARM64
     - compatible with PyPy
 
 ## Non features
 
 - other hash algorithms (this library is only about FNV algorithm)
+- too agressive CPU optimizations (we prefer maximizing binary portability)
 
 ## How to install/use it?
 
