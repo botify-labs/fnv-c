@@ -1,6 +1,8 @@
 # fnv-c
 
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/botify-labs/fnv-c/lint.yaml)](https://github.com/botify-labs/fnv-c/actions/workflows/lint.yaml)
+[![Codecov](https://img.shields.io/codecov/c/github/botify-labs/fnv-c)](https://app.codecov.io/github/botify-labs/fnv-c)
+[![pypi badge](https://img.shields.io/pypi/v/fnv-c?color=brightgreen)](https://pypi.org/project/fnv-c/)
 
 ## What is it?
 
@@ -25,7 +27,7 @@ More details on [this Wikepedia article](https://en.wikipedia.org/wiki/Fowler%E2
 
 ## Non features
 
-- other hash algorithms (this library is about a specific algorithm)
+- other hash algorithms (this library is only about FNV algorithm)
 
 ## How to install/use it?
 
@@ -38,6 +40,10 @@ import fnv_c
 
 print(fnv_c.fnv0_32(b"foo bar"))
 print(fnv_c.fnv0_64(b"foo bar"))
+print(fnv_c.fnv1_32(b"foo bar"))
+print(fnv_c.fnv1_64(b"foo bar"))
+print(fnv_c.fnv1a_32(b"foo bar"))
+print(fnv_c.fnv1a_64(b"foo bar"))
 ```
 
 ## Function signatures / API
@@ -46,10 +52,4 @@ Full API doc is available at: [https://botify-labs.github.io/fnv-c/fnv_c/](https
 
 ## Dev
 
-```
-pip install -r dev-requirements.txt
-python setup.py develop
-
-# get all tasks (lint, test, clean...)
-invoke --list
-```
+See [this specific document](DEV.md)
