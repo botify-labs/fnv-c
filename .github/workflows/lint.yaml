@@ -35,7 +35,7 @@ jobs:
           invoke lint --no-fix
       - name: Run tests
         run: |
-          invoke test 
+          invoke test --coverage
       - name: Make API docs
         if: matrix.python-version == '3.7'
         run: |
@@ -46,6 +46,11 @@ jobs:
         with:
           name: apidoc
           path: apihtml/
+      - name: Upload coverage reports to Codecov
+        if: matrix.python-version == '3.7' && github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   githubpages:
     runs-on: ubuntu-latest

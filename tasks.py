@@ -10,6 +10,10 @@ def _clean_apidoc(c):
     c.run("rm -Rf apihtml")
 
 
+def _clean_coverage(c):
+    c.run("rm -Rf htmlcov")
+
+
 @task
 def clean(c):
     """Clean the repository"""
@@ -18,6 +22,7 @@ def clean(c):
     c.run("find . -type d -name __pycache__ -exec rm -Rf {} \\; 2>/dev/null || true")
     c.run("rm -Rf dist build")
     _clean_apidoc(c)
+    _clean_coverage(c)
 
 
 @task(help={"fix": "try to automatically fix the code (default)"})
@@ -45,10 +50,16 @@ def lint(c, fix=True):
     lint_black(c, fix=fix)
 
 
-@task()
+@task(help={"coverage": "compute coverage"})
 def test(c, coverage=False):
     """Execute unit tests"""
-    c.run("pytest .")
+    if coverage:
+        _clean_coverage(c)
+        c.run(
+            f"pytest --cov-config=.coveragerc --no-cov-on-fail --cov={PACKAGE} --cov-report=term --cov-report=html --cov-report=xml ."
+        )
+    else:
+        c.run("pytest .")
 
 
 @task
