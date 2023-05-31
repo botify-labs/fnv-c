@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
+        python-version: ['3.7', '3.8', '3.9', '3.10', '3.11', 'pypy3.7']
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event. Selected python version is ${{ matrix.python-version }}."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
@@ -22,6 +22,8 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Display Python version
+        run: python --version
       - name: Deps install
         run: |
           pip install -r dev-requirements.txt
