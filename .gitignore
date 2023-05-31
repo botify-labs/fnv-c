@@ -161,3 +161,4 @@ cython_debug/
 
 fnv_c/ext/fnv.o
 apihtml
+.vscode
