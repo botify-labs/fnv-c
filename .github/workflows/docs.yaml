@@ -1,0 +1,48 @@
+name: "Publish documentation"
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  githubpages:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    concurrency:
+      group: "pages"
+      cancel-in-progress: true
+    environment:
+      name: github-pages
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.7"
+
+      - name: Install dependencies
+        run: |
+          pip install -r dev-requirements.txt
+
+      - name: Install fnv-c as editable
+        run: |
+          pip install -e .
+
+      - name: Make API docs
+        run: |
+          invoke apidoc
+
+      - name: Upload artifact to Github Pages
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: "apihtml/"
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
