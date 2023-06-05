@@ -1,6 +1,6 @@
 # fnv-c
 
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/botify-labs/fnv-c/lint.yaml)](https://github.com/botify-labs/fnv-c/actions/workflows/lint.yaml)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/botify-labs/fnv-c/ci.yaml)](https://github.com/botify-labs/fnv-c/actions/workflows/ci.yaml)
 [![Codecov](https://img.shields.io/codecov/c/github/botify-labs/fnv-c)](https://app.codecov.io/github/botify-labs/fnv-c)
 [![pypi badge](https://img.shields.io/pypi/v/fnv-c?color=brightgreen)](https://pypi.org/project/fnv-c/)
 
