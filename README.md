@@ -71,6 +71,10 @@ print(fnv_c.fnv1a_64(b"foo bar"))
 
 Full API doc is available at: [https://botify-labs.github.io/fnv-c/fnv_c/](https://botify-labs.github.io/fnv-c/fnv_c/)
 
-## Dev
+## Contributing
 
-See [this specific document](DEV.md)
+See [CONTRIBUTING](./CONTRIBUTING.md)
+
+## License
+
+**fnv-c** is licensed under the [MIT license](./LICENSE).
