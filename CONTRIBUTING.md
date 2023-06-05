@@ -1,4 +1,4 @@
-# DEV
+# Contributing
 
 ## Prerequisites
 
@@ -27,4 +27,3 @@ invoke --list
 The release process is completly automated in Github Action.
 
 Just create a new GitHub release with the UI associated to a tag `vX.Y.Z` (don't miss the leading (lowercase) `v`).
-
