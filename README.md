@@ -74,3 +74,7 @@ Full API doc is available at: [https://botify-labs.github.io/fnv-c/fnv_c/](https
 ## Dev
 
 See [this specific document](DEV.md)
+
+## License
+
+**fnv-c** is licensed under the [MIT license](./LICENSE).
