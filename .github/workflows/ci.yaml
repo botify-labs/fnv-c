@@ -5,7 +5,7 @@ on:
   pull_request: {}
 
 jobs:
-  lint_and_test:
+  linux_lint_and_test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -39,3 +39,29 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+
+  macos_test:
+    runs-on: macos-13
+    strategy:
+      matrix:
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "pypy3.8"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install -r dev-requirements.txt
+
+      - name: Install fnv-c as editable
+        run: |
+          python3 setup.py develop
+
+      - name: Run tests
+        run: |
+          invoke test --coverage
