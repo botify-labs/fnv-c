@@ -19,16 +19,36 @@ More details on [this Wikepedia article](https://en.wikipedia.org/wiki/Fowler%E2
 
 ## Features
 
-- speed: **4 000%** faster than basic Python implementation, **40%** faster than `pyhash`
+- speed: 
+    - up to **800 MB/s** hashing speed *(on Macbook Pro M1 (2020) with `fnv0_64`)*
+    - **6 800%** faster than basic Python implementation, **70%** faster than `pyhash` *(when hashing 100 bytes with `fnv0_64` on a cloud VM)*
 - portability:
     - tested with recent Python versions (3.7+)
     - compatible with ARM64
-    - compatible with PyPy
+    - compatible (and tested) with PyPy
 
 ## Non features
 
-- other hash algorithms (this library is only about FNV algorithm)
-- too agressive CPU optimizations (we prefer maximizing binary portability)
+- other hash algorithms *(this library is only about FNV algorithm)*
+- too agressive CPU optimizations *(we prefer maximizing binary portability)*
+
+## Benchmark
+
+You have a benchmark script [here](bench.py) to bench `fnv-c` by yourself and to compare it with:
+- [`fnvhash`](https://github.com/znerol/py-fnvhash) (pure python implementation)
+- [`pyhash`](https://github.com/flier/pyfasthash) (more general hashing library with C++ extension)
+
+### Comparisons with other libraries (`fnv0_64` on a cloud VM)
+
+Differences with `fnvhash` are huge (from **35%** for one byte hashing to **19 000%** for 1 000 bytes hashing with `fnv0_64`)
+
+Differences with `pyhash` (on `fnv0_64`) are shown with the following diagram:
+
+![](bench.png)
+
+### Influence of string size on `fnv-c` hashing speed (on a Macbook Pro M1 (2020) with `fnv0_64`)
+
+![](bench2.png)
 
 ## How to install/use it?
 
