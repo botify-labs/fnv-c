@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push: {}
+  pull_request: {}
+
+jobs:
+  lint_and_test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "pypy3.8"]
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event. Selected python version is ${{ matrix.python-version }}."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Display Python version
+        run: python --version
+      - name: Deps install
+        run: |
+          pip install -r dev-requirements.txt
+      - name: Install develop
+        run: |
+          python3 setup.py develop
+      - name: Run lint
+        run: |
+          invoke lint --no-fix
+      - name: Run tests
+        run: |
+          invoke test --coverage
+      - name: Upload coverage reports to Codecov
+        if: matrix.python-version == '3.7' && github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}

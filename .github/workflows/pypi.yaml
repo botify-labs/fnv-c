@@ -1,0 +1,37 @@
+name: "Publish release to PyPI"
+
+on:
+  release:
+    types:
+      - created
+
+jobs:
+  pypi:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.7
+
+      - name: Install dependencies
+        run: |
+          pip install -r dev-requirements.txt
+
+      - name: Bump version
+        run: |
+          invoke bump-version
+
+      - name: Build sdist
+        run: |
+          python setup.py sdist
+
+      - name: Upload to PyPi
+        env:
+          TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
+        run: |
+          twine upload dist/*
