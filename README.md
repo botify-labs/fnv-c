@@ -9,7 +9,7 @@
 **fnv-c** is a Python 3.7+ FNV (`fnv0`, `fnv1`, `fnv1a`) **non-cryptographic** hash library implemented in C through libffi.
 
 FNV ("Fowler–Noll–Vo") is is a non-cryptographic hash function created by Glenn Fowler, Landon Curt Noll, and Kiem-Phong.
-FNV is probably no the "best" non-cryptographic hash function but:
+FNV is probably not the "best" non-cryptographic hash function but:
 
 - it has a reasonably good distribution
 - it's very fast
