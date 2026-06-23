@@ -76,8 +76,9 @@ jobs:
     strategy:
       matrix:
         # ubuntu-latest = x86_64, ubuntu-24.04-arm = native aarch64 (no QEMU),
-        # macos-latest builds both arm64 + x86_64 (see [tool.cibuildwheel.macos]).
-        os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest]
+        # macos-latest builds both arm64 + x86_64 (see [tool.cibuildwheel.macos]),
+        # windows-latest = win_amd64.
+        os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest, windows-latest]
     steps:
       - name: Checkout
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
