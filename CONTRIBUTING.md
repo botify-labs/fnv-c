@@ -2,8 +2,11 @@
 
 ## Prerequisites
 
+This project uses [uv](https://docs.astral.sh/uv/) to manage the dev
+environment (it builds the C extension and installs the dev dependencies):
+
 ```
-pip install -r dev-requirements.txt
+uv sync
 ```
 
 ## Linting, tests...
@@ -13,13 +16,13 @@ This project uses [Invoke](https://www.pyinvoke.org/) to launch various dev scri
 For example, to execute linting:
 
 ```
-invoke lint
+uv run invoke lint
 ```
 
 To get the list of all dev scripts
 
 ```
-invoke --list
+uv run invoke --list
 ```
 
 ## Releasing

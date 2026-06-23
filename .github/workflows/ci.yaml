@@ -5,65 +5,147 @@ on:
     branches:
       - main
   pull_request: {}
+  release:
+    types:
+      - created
+
+# Cancel an in-progress run when a newer one starts for the same branch/PR.
+# Releases are exempt so an in-flight publish is never interrupted.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: ${{ github.event_name != 'release' }}
 
 jobs:
   linux_lint_and_test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "pypy3.8"]
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14", "pypy3.10", "pypy3.11"]
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event. Selected python version is ${{ matrix.python-version }}."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
-        uses: actions/checkout@v3
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - name: Install uv
+        uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6.8.0
         with:
-          python-version: ${{ matrix.python-version }}
+          enable-cache: true
+      - name: Install deps and build the extension
+        run: uv sync --python "${{ matrix.python-version }}"
       - name: Display Python version
-        run: python --version
-      - name: Deps install
-        run: |
-          pip install -r dev-requirements.txt
-      - name: Install develop
-        run: |
-          python3 setup.py develop
+        run: uv run python --version
       - name: Run lint
-        run: |
-          invoke lint --no-fix
+        run: uv run invoke lint --no-fix
       - name: Run tests
-        run: |
-          invoke test --coverage
+        run: uv run invoke test --coverage
       - name: Upload coverage reports to Codecov
-        if: matrix.python-version == '3.7' && github.ref == 'refs/heads/main' && github.event_name == 'push'
-        uses: codecov/codecov-action@v3
+        if: matrix.python-version == '3.12' && github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: codecov/codecov-action@ab904c41d6ece82784817410c45d8b8c02684457 # v3.1.6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
   macos_test:
-    runs-on: macos-13
+    runs-on: macos-latest
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "pypy3.8"]
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14", "pypy3.10", "pypy3.11"]
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6.8.0
         with:
-          python-version: ${{ matrix.python-version }}
+          enable-cache: true
 
-      - name: Install dependencies
-        run: |
-          pip install -r dev-requirements.txt
-
-      - name: Install fnv-c as editable
-        run: |
-          python3 setup.py develop
+      - name: Install deps and build the extension
+        run: uv sync --python "${{ matrix.python-version }}"
 
       - name: Run tests
-        run: |
-          invoke test --coverage
+        run: uv run invoke test --coverage
+
+  # --- Release: only runs on a published release, and only after the test
+  # jobs above succeed, so we never publish something that wasn't tested. ---
+
+  build_wheels:
+    name: Build wheels on ${{ matrix.os }}
+    needs: [linux_lint_and_test, macos_test]
+    if: github.event_name == 'release'
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          # dunamai (invoke bump-version) needs the full history and tags.
+          fetch-depth: 0
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6.8.0
+
+      - name: Bump version
+        run: uv run --no-project --with invoke --with dunamai invoke bump-version
+
+      - name: Build wheels
+        # Builds manylinux + musllinux wheels and runs auditwheel repair
+        # automatically. Covers CPython 3.10-3.14 and PyPy 3.10-3.11
+        # (cibuildwheel reads requires-python from pyproject.toml).
+        run: uvx cibuildwheel@4.1.0 --output-dir wheelhouse
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: wheels-${{ matrix.os }}
+          path: wheelhouse/*.whl
+
+  build_sdist:
+    name: Build sdist
+    needs: [linux_lint_and_test, macos_test]
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          fetch-depth: 0
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6.8.0
+
+      - name: Bump version
+        run: uv run --no-project --with invoke --with dunamai invoke bump-version
+
+      - name: Build sdist
+        run: uv build --sdist --out-dir dist
+
+      - name: Upload sdist
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: sdist
+          path: dist/*.tar.gz
+
+  upload:
+    name: Upload to PyPI
+    needs: [build_wheels, build_sdist]
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    # Trusted publishing: PyPI mints a short-lived token from this job's OIDC
+    # identity, so no API token / password secret is needed. Requires a trusted
+    # publisher configured on PyPI, bound to the `release` environment.
+    environment:
+      name: release
+      url: https://pypi.org/p/fnv-c
+    permissions:
+      id-token: write
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Upload to PyPi
+        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b # v1.14.0

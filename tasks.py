@@ -38,9 +38,9 @@ def lint_black(c, fix=True):
 def lint_ruff(c, fix=True):
     """Lint the code with ruff"""
     if fix:
-        c.run("ruff . --fix")
+        c.run("ruff check . --fix")
     else:
-        c.run("ruff .")
+        c.run("ruff check .")
 
 
 @task(help={"fix": "try to automatically fix the code (default)"})

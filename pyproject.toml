@@ -1,10 +1,74 @@
+[build-system]
+requires = ["setuptools", "wheel", "cffi>=1.17"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fnv-c"
+description = "Python 3.10+ FNV (fnv0, fnv1, fnv1a) non-cryptographic hash library implemented in C through libffi"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [{ name = "Fabien MARTY", email = "fabien.marty@botify.com" }]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "License :: OSI Approved :: MIT License",
+]
+dependencies = ["cffi>=1.0.0"]
+# The version is injected by setup.py (bumped at release time by dunamai).
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/botify-labs/fnv-c"
+
+[dependency-groups]
+dev = [
+    "black",
+    "ruff",
+    "pytest",
+    "pytest-cov",
+    "coverage",
+    "invoke",
+    "dunamai",
+    "pdoc3",
+    "cffi>=1.17",
+]
+
+[tool.setuptools.packages.find]
+include = ["fnv_c*"]
+
+[tool.cibuildwheel]
+# Use the PEP 517 build frontend so the [build-system] requires above
+# (in particular cffi) are available when compiling the C extension.
+build-frontend = "build"
+# Build the wheel, then run the actual test suite against it.
+test-requires = "pytest"
+test-command = "pytest {project}/tests"
+# PyPy is opt-in since cibuildwheel 4.x (gives us pp311; pp310 is EOL).
+enable = ["pypy"]
+# Don't ship free-threaded (3.14t) wheels yet — they aren't covered by our
+# own test matrix. Enable once we add a 3.14t CI job.
+skip = ["cp314t-*"]
+
+[tool.cibuildwheel.linux]
+# Only 64-bit wheels (x86_64). Drop legacy 32-bit (i686) builds.
+archs = ["auto64"]
+
+[tool.cibuildwheel.macos]
+# Separate arm64 + x86_64 wheels. The Apple-silicon runner builds arm64
+# natively and cross-compiles x86_64 (its tests are skipped automatically).
+archs = ["x86_64", "arm64"]
+
 [tool.ruff]
+line-length = 88
+target-version = "py310"
+extend-exclude = ["docs/python", "html"]
+
+[tool.ruff.lint]
 # Enable Pyflakes `E` and `F` codes by default.
 select = ["E", "F", "W", "N", "UP", "B", "I", "PL", "RUF"]
 ignore = [
     "E501",
-    "PLR2004"
+    "PLR2004",
 ]
-line-length = 88
-target-version = "py37"
-extend-exclude = ["docs/python", "html"]
